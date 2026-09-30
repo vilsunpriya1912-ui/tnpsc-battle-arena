@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Battle Result - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/arena.css') }}">
+</head>
+<body class="arena-bg">
+    <div class="arena-card result-card {{ 'victory-glow' if result == 'win' else ('defeat-glow' if result == 'lose' else '') }}">
+        {% if result == 'win' %}
+            <h1>🏆 VICTORY!</h1>
+        {% elif result == 'lose' %}
+            <h1>💀 DEFEAT</h1>
+        {% else %}
+            <h1>🤝 DRAW</h1>
+        {% endif %}
+
+        <div class="result-scores">
+            <div>YOU: <span>{{ player_score }}</span></div>
+            <div>{{ ai_label }}: <span>{{ ai_score }}</span></div>
+        </div>
+
+        <div class="rewards-box">
+            <p>🏅 +{{ xp_earned }} XP</p>
+            <p>🪙 +{{ coins_earned }} Coins</p>
+        </div>
+
+        <div class="ai-analysis-box">
+            <h3>🤖 AI Performance Analysis</h3>
+            <table class="report-table">
+                <tr><th>Difficulty</th><td>{{ analysis.difficulty }}</td></tr>
+                <tr><th>Questions Faced</th><td>{{ analysis.questions_faced }}</td></tr>
+                <tr><th>Correct Answers</th><td>{{ analysis.ai_correct }} / {{ analysis.questions_faced }}</td></tr>
+                <tr><th>Actual Accuracy</th><td>{{ analysis.ai_accuracy }}%</td></tr>
+                <tr><th>Avg Response Time</th><td>{{ analysis.ai_avg_response_time }}s</td></tr>
+            </table>
+        </div>
+
+        <div class="option-grid">
+            <a href="{{ url_for('exam_select') }}" class="option-card">⚔️ Battle Again</a>
+            <a href="{{ url_for('leaderboard') }}" class="option-card">🏆 Leaderboard</a>
+            <a href="{{ url_for('dashboard') }}" class="option-card">🏠 Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

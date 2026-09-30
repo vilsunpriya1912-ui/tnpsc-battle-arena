@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes & Resources - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="select-container">
+        <h2>📒 Notes & Resources</h2>
+        <table class="report-table">
+            <tr><th>Subject</th><th>📘 Recommended Book</th><th>Q&A</th></tr>
+            {% for subject in subjects %}
+            <tr>
+                <td>{{ subject }}</td>
+                <td>{{ books[subject] }}</td>
+                <td><a href="{{ url_for('notes_subject', subject=subject) }}" class="option-card" style="padding:8px 14px; display:inline-block;">View Q&A</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

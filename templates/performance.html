@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Performance - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="select-container">
+        <h2>📊 My Performance</h2>
+        {% if results %}
+            <table class="report-table">
+                <tr><th>Subject</th><th>Difficulty</th><th>Mode</th><th>Score</th><th>Date</th></tr>
+                {% for r in results %}
+                <tr>
+                    <td>{{ r.subject }}</td>
+                    <td>{{ r.difficulty|capitalize }}</td>
+                    <td>{{ r.mode|upper }}</td>
+                    <td>{{ r.score }} / {{ r.total_questions }}</td>
+                    <td>{{ r.date_taken.strftime('%d-%m-%Y') }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>You haven't attempted any quiz yet.</p>
+        {% endif %}
+        <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

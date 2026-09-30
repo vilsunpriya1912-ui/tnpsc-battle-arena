@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Battle Lobby - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/arena.css') }}">
+</head>
+<body class="arena-bg">
+    <div id="waitingScreen" class="arena-card">
+        <h2 class="arena-title">⚔️ BATTLE ROOM</h2>
+        <p>Share this code with your opponent:</p>
+        <div class="room-code-display">{{ room_code }}</div>
+        <p id="waitingText">Waiting for opponent to join...</p>
+        <div class="loader-dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <div id="vsScreen" class="vs-screen" style="display:none;">
+        <div class="vs-player" id="player1Card">
+            <div class="vs-avatar">🥋</div>
+            <div class="vs-name" id="player1Name">You</div>
+        </div>
+        <div class="vs-badge">VS</div>
+        <div class="vs-player" id="player2Card">
+            <div class="vs-avatar">🥋</div>
+            <div class="vs-name" id="player2Name">Opponent</div>
+        </div>
+    </div>
+
+    <div style="text-align:center;">
+        <button id="readyBtn" class="arena-btn" style="display:none; max-width:300px;">✅ READY TO FIGHT</button>
+        <p id="readyStatus" style="color:#fff;"></p>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+        const roomCode = "{{ room_code }}";
+        const userId = "{{ session['user_id'] }}";
+        const myName = "{{ session['username'] }}";
+
+        socket.emit('join_battle_room', { room_code: roomCode });
+
+        socket.on('opponent_found', (data) => {
+            document.getElementById('waitingScreen').style.display = 'none';
+            document.getElementById('vsScreen').style.display = 'flex';
+            document.getElementById('readyBtn').style.display = 'block';
+
+            const players = data.players;
+            const me = players.find(p => p.id == userId);
+            const opponent = players.find(p => p.id != userId);
+            document.getElementById('player1Name').innerText = me ? me.name : myName;
+            document.getElementById('player2Name').innerText = opponent ? opponent.name : "Opponent";
+        });
+
+        document.getElementById('readyBtn').addEventListener('click', () => {
+            socket.emit('player_ready', { room_code: roomCode, user_id: userId });
+            document.getElementById('readyBtn').disabled = true;
+            document.getElementById('readyStatus').innerText = "Waiting for opponent to be ready...";
+        });
+
+        socket.on('battle_start', () => {
+            window.location.href = "/battle-room/" + roomCode;
+        });
+    </script>
+</body>
+</html>

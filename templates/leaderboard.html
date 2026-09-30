@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaderboard - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/arena.css') }}">
+</head>
+<body class="arena-bg">
+    <div class="arena-card" style="max-width:600px;">
+        <h2 class="arena-title">🏆 LEADERBOARD</h2>
+        <table class="report-table" style="color:#fff;">
+            <tr><th>Rank</th><th>Player</th><th>XP</th><th>Coins</th></tr>
+            {% for user in users %}
+            <tr style="{{ 'background:#2a2a55;' if loop.index <= 3 else '' }}">
+                <td>{% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% elif loop.index == 3 %}🥉{% else %}{{ loop.index }}{% endif %}</td>
+                <td>{{ user.full_name }}</td>
+                <td>{{ user.xp or 0 }}</td>
+                <td>{{ user.coins or 0 }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

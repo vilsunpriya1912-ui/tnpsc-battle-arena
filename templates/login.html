@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="auth-container">
+        <h2>TNPSC Battle Arena – Login</h2>
+        {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        <form method="POST" action="{{ url_for('login') }}">
+            <input type="text" name="identifier" placeholder="Username or Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <label><input type="checkbox" name="remember"> Remember Me</label>
+            <button type="submit">Login</button>
+        </form>
+        <p><a href="#">Forgot Password?</a></p>
+        <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+    </div>
+</body>
+</html>

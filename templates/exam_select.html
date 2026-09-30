@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TNPSC Exam - Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="select-container">
+        <h2>TNPSC EXAM</h2>
+        <p>Select your exam group</p>
+        <div class="option-grid">
+            <a href="{{ url_for('subject_select', group='group1', flow=flow) }}" class="option-card">TNPSC Group 1</a>
+            <a href="{{ url_for('subject_select', group='group2', flow=flow) }}" class="option-card">TNPSC Group 2</a>
+            <a href="{{ url_for('subject_select', group='group4', flow=flow) }}" class="option-card">TNPSC Group 4</a>
+        </div>
+        <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

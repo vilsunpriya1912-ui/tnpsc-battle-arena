@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Battle - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/arena.css') }}">
+</head>
+<body class="arena-bg">
+
+    <div class="battle-topbar">
+        <div class="score-box me">
+            <span class="score-label">YOU</span>
+            <span class="score-value" id="myScore">0</span>
+            <span class="combo-tag" id="myCombo">🔥 x0</span>
+        </div>
+        <div class="timer-box">
+            <div class="timer-circle" id="timerCircle">15</div>
+            <span id="questionCounter">Q 1/10</span>
+        </div>
+        <div class="score-box opponent">
+            <span class="score-label" id="opponentName">OPPONENT</span>
+            <span class="score-value" id="opponentScore">0</span>
+            <span class="combo-tag" id="opponentCombo">🔥 x0</span>
+        </div>
+    </div>
+
+    <div class="arena-card battle-question-card">
+        <h3 id="questionText">Loading question...</h3>
+        <div class="options-grid" id="optionsGrid">
+            <button class="battle-option" data-option="A"></button>
+            <button class="battle-option" data-option="B"></button>
+            <button class="battle-option" data-option="C"></button>
+            <button class="battle-option" data-option="D"></button>
+        </div>
+        <p id="battleFeedback" class="feedback"></p>
+    </div>
+
+    <div class="powerup-bar" id="powerupBar">
+        <span class="powerup-label">POWER-UPS:</span>
+        <div id="powerupIcons"></div>
+    </div>
+
+    <div id="freezeAlert" class="freeze-alert" style="display:none;">❄️ Opponent froze your timer! -5s</div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+        const roomCode = "{{ room_code }}";
+        const userId = "{{ user_id }}";
+
+        let timeLeft = 15;
+        let timerInterval = null;
+        let currentQuestion = null;
+        let useDoublePoints = false;
+
+        socket.emit('join_battle_room', { room_code: roomCode });
+
+        socket.on('new_question', (data) => {
+            currentQuestion = data;
+            document.getElementById('questionCounter').innerText = `Q ${data.question_number}/${data.total}`;
+            document.getElementById('questionText').innerText = data.question;
+            document.getElementById('battleFeedback').innerText = '';
+
+            const opts = data.options;
+            document.querySelectorAll('.battle-option').forEach(btn => {
+                const key = btn.getAttribute('data-option');
+                btn.innerText = key + '. ' + opts[key];
+                btn.disabled = false;
+                btn.classList.remove('correct', 'wrong', 'hidden-option');
+            });
+
+            startTimer(data.time_limit || 15);
+        });
+
+        function startTimer(seconds) {
+            clearInterval(timerInterval);
+            timeLeft = seconds;
+            document.getElementById('timerCircle').innerText = timeLeft;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timerCircle').innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitAnswer(null);
+                }
+            }, 1000);
+        }
+
+        document.querySelectorAll('.battle-option').forEach(btn => {
+            btn.addEventListener('click', () => submitAnswer(btn.getAttribute('data-option')));
+        });
+
+        function submitAnswer(selected) {
+            clearInterval(timerInterval);
+            document.querySelectorAll('.battle-option').forEach(b => b.disabled = true);
+            const timeTaken = (currentQuestion.time_limit || 15) - timeLeft;
+
+            socket.emit('submit_answer', {
+                room_code: roomCode, user_id: userId, selected_option: selected,
+                time_taken: timeTaken, use_double_points: useDoublePoints
+            });
+            useDoublePoints = false;
+        }
+
+        socket.on('answer_result', (data) => {
+            document.getElementById('myScore').innerText = data.total_score;
+            document.getElementById('myCombo').innerText = `🔥 x${data.combo}`;
+            document.getElementById('battleFeedback').innerText = data.is_correct
+                ? `✅ Correct! +${data.points_earned} pts`
+                : `❌ Wrong! Answer was ${data.correct_answer}`;
+            document.getElementById('battleFeedback').className = data.is_correct ? 'feedback correct' : 'feedback wrong';
+
+            if (data.powerup_awarded) addPowerupIcon(data.powerup_awarded);
+        });
+
+        socket.on('live_score_update', (data) => {
+            const opponent = data.scoreboard.find(p => p.user_id != userId);
+            const me = data.scoreboard.find(p => p.user_id == userId);
+            if (opponent) {
+                document.getElementById('opponentName').innerText = opponent.name.toUpperCase();
+                document.getElementById('opponentScore').innerText = opponent.score;
+                document.getElementById('opponentCombo').innerText = `🔥 x${opponent.combo}`;
+            }
+            if (me) document.getElementById('myScore').innerText = me.score;
+        });
+
+        socket.on('opponent_used_freeze', (data) => {
+            timeLeft = Math.max(0, timeLeft - data.seconds_lost);
+            document.getElementById('timerCircle').innerText = timeLeft;
+            const alertBox = document.getElementById('freezeAlert');
+            alertBox.style.display = 'block';
+            setTimeout(() => alertBox.style.display = 'none', 2000);
+        });
+
+        function addPowerupIcon(key) {
+            const icons = { fifty_fifty: "🎯", double_points: "⚡", freeze: "❄️", confuse_ai: "🌀" };
+            const div = document.createElement('div');
+            div.className = 'powerup-icon';
+            div.innerText = icons[key] || "⭐";
+            div.onclick = () => usePowerup(key, div);
+            document.getElementById('powerupIcons').appendChild(div);
+        }
+
+        function usePowerup(key, el) {
+            socket.emit('use_powerup', { room_code: roomCode, user_id: userId, powerup_key: key });
+            if (key === 'double_points') useDoublePoints = true;
+            el.remove();
+        }
+
+        socket.on('battle_finished', (data) => {
+            const myResult = data.results[userId];
+            sessionStorage.setItem('lastBattleResult', JSON.stringify(myResult));
+            window.location.href = "/battle-room-result";
+        });
+    </script>
+</body>
+</html>

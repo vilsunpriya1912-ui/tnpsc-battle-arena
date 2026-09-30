@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject }} Notes - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="select-container" style="max-width:800px;">
+        <h2>📒 {{ subject }} — Questions & Answers</h2>
+        <p><strong>Recommended Book:</strong> {{ book }}</p>
+
+        {% for q in questions %}
+        <div class="report-table" style="text-align:left; padding:15px; margin-bottom:12px; border:1px solid #ddd; border-radius:8px;">
+            <p><strong>Q{{ loop.index }}. {{ q.question }}</strong></p>
+            <p>A. {{ q.option_a }} &nbsp; B. {{ q.option_b }} &nbsp; C. {{ q.option_c }} &nbsp; D. {{ q.option_d }}</p>
+            <p><strong>Answer:</strong> Option {{ q.answer }}</p>
+            <button class="start-btn" style="width:auto; padding:8px 16px;" onclick="toggleExplain('exp{{ loop.index }}')">Explain</button>
+            <p id="exp{{ loop.index }}" style="display:none; margin-top:10px; background:#eef2f7; padding:10px; border-radius:6px;">
+                {{ q.explanation if q.explanation else "This is a commonly asked TNPSC question — review the topic basics." }}
+            </p>
+        </div>
+        {% endfor %}
+
+        <a href="{{ url_for('notes') }}" class="back-link">← Back to Notes</a>
+    </div>
+
+    <script>
+        function toggleExplain(id) {
+            const el = document.getElementById(id);
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

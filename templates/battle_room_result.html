@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Battle Result - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/arena.css') }}">
+</head>
+<body class="arena-bg">
+    <div class="arena-card result-card" id="resultCard">
+        <h1 id="resultTitle">LOADING...</h1>
+        <div class="result-scores">
+            <div>YOU: <span id="myFinalScore">0</span></div>
+            <div>OPPONENT: <span id="opponentFinalScore">0</span></div>
+        </div>
+        <div class="rewards-box" id="rewardsBox" style="display:none;">
+            <p>🏅 +<span id="xpEarned">0</span> XP</p>
+            <p>🪙 +<span id="coinsEarned">0</span> Coins</p>
+        </div>
+        <div class="option-grid">
+            <a href="{{ url_for('exam_select') }}" class="option-card">⚔️ Battle Again</a>
+            <a href="{{ url_for('leaderboard') }}" class="option-card">🏆 Leaderboard</a>
+            <a href="{{ url_for('dashboard') }}" class="option-card">🏠 Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        const data = JSON.parse(sessionStorage.getItem('lastBattleResult') || '{}');
+        const titleEl = document.getElementById('resultTitle');
+        const cardEl = document.getElementById('resultCard');
+
+        if (data.result === 'win') {
+            titleEl.innerText = "🏆 VICTORY!";
+            cardEl.classList.add('victory-glow');
+        } else if (data.result === 'lose') {
+            titleEl.innerText = "💀 DEFEAT";
+            cardEl.classList.add('defeat-glow');
+        } else {
+            titleEl.innerText = "🤝 DRAW";
+        }
+
+        document.getElementById('myFinalScore').innerText = data.score || 0;
+        document.getElementById('opponentFinalScore').innerText = data.opponent_score || 0;
+        sessionStorage.removeItem('lastBattleResult');
+    </script>
+</body>
+</html>

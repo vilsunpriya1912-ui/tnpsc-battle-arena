@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose Battle Mode - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/arena.css') }}">
+</head>
+<body class="arena-bg">
+    <div class="arena-card">
+        <h2 class="arena-title">⚔️ CHOOSE YOUR BATTLE</h2>
+        <p style="color:#9a9ad1; margin-bottom:20px;">{{ subject }}</p>
+
+        <div class="ai-select-grid" style="grid-template-columns: 1fr 1fr;">
+            <a href="{{ url_for('battle_create', subject=subject) }}" class="ai-card" style="text-decoration:none; color:#fff;">
+                <div class="ai-avatar">👤⚔️👤</div>
+                <h3>PLAYER VS PLAYER</h3>
+                <p>Create a room & battle a friend live</p>
+            </a>
+
+            <a href="{{ url_for('battle_ai_setup', subject=subject) }}" class="ai-card" style="text-decoration:none; color:#fff;">
+                <div class="ai-avatar">👤⚔️🤖</div>
+                <h3>PLAYER VS AI</h3>
+                <p>Battle a bot instantly, no waiting</p>
+            </a>
+        </div>
+
+        <a href="{{ url_for('battle_join_choice', group=group, subject=subject) }}" class="arena-btn" style="text-decoration:none; display:block;">
+            🔑 JOIN A FRIEND'S ROOM
+        </a>
+
+        <a href="{{ url_for('subject_select', group=group) }}" class="back-link">← Back</a>
+    </div>
+</body>
+</html>

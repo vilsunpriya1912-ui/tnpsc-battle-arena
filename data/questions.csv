@@ -1,0 +1,101 @@
+subject,difficulty,question,option_a,option_b,option_c,option_d,answer,explanation
+History,easy,Who founded the Mughal Empire?,Akbar,Babur,Humayun,Shah Jahan,B,Babur founded the Mughal Empire in 1526 after defeating Ibrahim Lodi at the First Battle of Panipat.
+History,easy,In which year did India gain independence?,1945,1950,1947,1942,C,India gained independence from British rule on 15 August 1947.
+History,easy,Who was known as the Iron Man of India?,Nehru,Sardar Vallabhbhai Patel,Gandhi,Subhas Chandra Bose,B,Sardar Vallabhbhai Patel earned the title Iron Man of India for unifying the princely states.
+History,easy,The Dandi March was related to which law?,Land Tax,Income Tax,Salt Tax,Import Tax,C,Gandhi led the Dandi March in 1930 to protest the British salt tax.
+History,easy,Who founded the Indian National Congress?,Dadabhai Naoroji,W.C. Banerjee,Surendranath Banerjee,A.O. Hume,D,"A.O. Hume, a retired British civil servant, founded the Indian National Congress in 1885."
+History,medium,In which year was the First Battle of Panipat fought?,1556,1761,1600,1526,D,The First Battle of Panipat was fought in 1526 between Babur and Ibrahim Lodi.
+History,medium,Who was the last Mughal Emperor?,Akbar II,Shah Alam II,Aurangzeb,Bahadur Shah II,D,"Bahadur Shah II was the last Mughal Emperor, exiled after the 1857 revolt."
+History,medium,The Non-Cooperation Movement was launched in which year?,1930,1942,1919,1920,D,Gandhi launched the Non-Cooperation Movement in 1920 in response to the Jallianwala Bagh massacre.
+History,medium,Who wrote the national song Vande Mataram?,Rabindranath Tagore,Subramania Bharati,Bankim Chandra Chattopadhyay,Muhammad Iqbal,C,Vande Mataram was composed by Bankim Chandra Chattopadhyay in his novel Anandamath.
+History,medium,Who founded the Tamil newspaper Swadesamitran?,V.O. Chidambaram Pillai,Bharathiar,Rajaji,G. Subramania Iyer,D,G. Subramania Iyer founded the Tamil newspaper Swadesamitran in 1882.
+History,hard,Who led the Vaikom Satyagraha?,Gandhi,Periyar E.V. Ramasamy,Ambedkar,Rajaji,B,Periyar E.V. Ramasamy played a leading role in the Vaikom Satyagraha of 1924-25.
+History,hard,The Poona Pact was signed between Gandhi and whom?,Jinnah,Nehru,B.R. Ambedkar,Patel,C,The Poona Pact of 1932 was signed between Gandhi and B.R. Ambedkar regarding separate electorates.
+History,hard,In which year was the English East India Company established?,1757,1857,1500,1600,D,The English East India Company was established by royal charter in 1600.
+History,hard,Which Nawab of Bengal was defeated at the Battle of Plassey?,Mir Jafar,Siraj-ud-Daulah,Tipu Sultan,Hyder Ali,B,"Siraj-ud-Daulah, the Nawab of Bengal, was defeated by the British at Plassey in 1757."
+History,hard,In which year did the Cripps Mission come to India?,1946,1935,1930,1942,D,The Cripps Mission arrived in India in 1942 to discuss constitutional reforms.
+Geography,easy,Which is the second longest river in India?,Ganga,Godavari,Brahmaputra,Yamuna,B,"The Godavari, often called the Dakshin Ganga, is the second longest river in India."
+Geography,easy,Which is the largest desert in India?,Thar Desert,Rann of Kutch,Deccan Plateau,Ladakh,A,"The Thar Desert, located mainly in Rajasthan, is the largest desert in India."
+Geography,easy,Which mountain range separates India from China?,Vindhya Range,Aravalli Range,Western Ghats,Himalayas,D,The Himalayas form the natural boundary between India and China/Tibet.
+Geography,easy,Which is the largest island in India?,Majuli,Elephanta Island,Diu Island,Andaman Island,A,"Majuli, located in the Brahmaputra river in Assam, is the largest river island in India."
+Geography,easy,Which Tamil Nadu city is known as the Manchester of South India?,Madurai,Coimbatore,Salem,Trichy,B,Coimbatore is called the Manchester of South India due to its textile industry.
+Geography,medium,Which is the southernmost point of mainland India?,Kanyakumari,Rameswaram,Kochi,Kollam,A,Kanyakumari marks the southernmost tip of mainland India.
+Geography,medium,Which state is the largest producer of tea in India?,Kerala,Tamil Nadu,Assam,West Bengal,C,Assam is the largest tea-producing state in India.
+Geography,medium,Which is the largest freshwater lake in India?,Chilika Lake,Wular Lake,Dal Lake,Loktak Lake,B,Wular Lake in Jammu and Kashmir is the largest freshwater lake in India.
+Geography,medium,Which Tamil Nadu district is known for hill stations like Ooty?,Nilgiris,Erode,Dindigul,Theni,A,"The Nilgiris district is home to Ooty, a popular hill station."
+Geography,medium,Which is the largest saltwater lake in India?,Wular Lake,Sambhar Lake,Chilika Lake,Loktak Lake,C,Chilika Lake in Odisha is the largest coastal saltwater lagoon in India.
+Geography,hard,Which strait separates India and Sri Lanka?,Palk Strait,Malacca Strait,Bering Strait,Torres Strait,A,"The Palk Strait separates Tamil Nadu, India, from Sri Lanka."
+Geography,hard,Which Indian state is known as the Spice Garden of India?,Karnataka,Kerala,Tamil Nadu,Goa,B,Kerala is known as the Spice Garden of India due to its production of spices.
+Geography,hard,Which is the largest man-made lake in Tamil Nadu?,Mettur Dam,Vaigai Dam,Bhavanisagar Dam,Krishnagiri Dam,A,"Mettur Dam, built across the Kaveri river, forms the largest reservoir in Tamil Nadu."
+Geography,hard,Which Union Territory is India's smallest?,Lakshadweep,Chandigarh,Puducherry,Daman and Diu,A,Lakshadweep is the smallest Union Territory of India by area.
+Geography,hard,Which river is known as the Dakshin Ganga?,Kaveri,Krishna,Godavari,Tungabhadra,C,The Godavari river is popularly referred to as the Dakshin Ganga.
+Polity,easy,Who was the first Speaker of the Lok Sabha?,G.V. Mavalankar,Sardar Hukam Singh,N. Sanjiva Reddy,Balram Jakhar,A,G.V. Mavalankar served as the first Speaker of the Lok Sabha from 1952 to 1956.
+Polity,easy,How many members can the Rajya Sabha have at maximum?,545,250,552,238,B,The Rajya Sabha can have a maximum strength of 250 members as per the Constitution.
+Polity,easy,Which article of the Indian Constitution deals with the Right to Equality?,Article 19,Article 21,Article 14,Article 32,C,Article 14 of the Indian Constitution guarantees the Right to Equality before law.
+Polity,easy,Who is known as the Guardian of the Constitution?,President,Prime Minister,Parliament,Supreme Court,D,The Supreme Court of India is regarded as the Guardian of the Constitution.
+Polity,easy,What is the minimum age to become the President of India?,25 years,30 years,35 years,40 years,C,A person must be at least 35 years old to become the President of India.
+Polity,medium,From which country did India borrow the concept of Fundamental Duties?,UK,USA,USSR,Canada,C,India borrowed the concept of Fundamental Duties from the erstwhile USSR (Russian) constitution.
+Polity,medium,Which schedule of the Constitution deals with Panchayati Raj institutions?,Ninth Schedule,Tenth Schedule,Eleventh Schedule,Twelfth Schedule,C,The Eleventh Schedule of the Constitution deals with the powers of Panchayati Raj institutions.
+Polity,medium,Who has the power to declare a financial emergency in India?,Prime Minister,President,Parliament,Chief Justice,B,The President of India has the power to declare a financial emergency under Article 360.
+Polity,medium,Which constitutional amendment lowered the voting age from 21 to 18?,42nd Amendment,44th Amendment,61st Amendment,73rd Amendment,C,The 61st Constitutional Amendment Act of 1988 lowered the voting age from 21 to 18.
+Polity,medium,Who appoints the Chief Election Commissioner of India?,Prime Minister,President,Parliament,Chief Justice,B,The Chief Election Commissioner of India is appointed by the President.
+Polity,hard,Which part of the Constitution contains the Directive Principles of State Policy?,Part III,Part IV,Part V,Part VI,B,Part IV of the Indian Constitution contains the Directive Principles of State Policy.
+Polity,hard,How many schedules did the Indian Constitution originally have?,8,10,12,9,A,The Indian Constitution originally had 8 schedules; there are now 12.
+Polity,hard,Who was the first woman Speaker of the Lok Sabha?,Sumitra Mahajan,Meira Kumar,Sarojini Naidu,Pratibha Patil,B,Meira Kumar became the first woman Speaker of the Lok Sabha in 2009.
+Polity,hard,What is the term of office of the Governor of a state?,5 years,6 years,4 years,at the pleasure of the President,D,"A Governor holds office during the pleasure of the President, with a normal term of five years."
+Polity,hard,Which house of Parliament is known as the permanent house?,Lok Sabha,Rajya Sabha,Both,Neither,B,The Rajya Sabha is a permanent house as it is not subject to dissolution.
+Economics,easy,Which committee recommended the establishment of NITI Aayog?,Not applicable,Planning Commission,Finance Commission,GST Council,A,"NITI Aayog was established in 2015 through a resolution of the Union Cabinet, replacing the Planning Commission."
+Economics,easy,In which year was the Goods and Services Tax (GST) implemented in India?,2016,2017,2018,2015,B,GST was implemented across India on 1 July 2017.
+Economics,easy,Who is regarded as the father of the Indian Green Revolution?,Norman Borlaug,M.S. Swaminathan,Verghese Kurien,C. Subramaniam,B,M.S. Swaminathan is regarded as the father of the Green Revolution in India.
+Economics,easy,Which organization regulates the Indian stock market?,RBI,SEBI,NABARD,IRDAI,B,The Securities and Exchange Board of India (SEBI) regulates the securities market in India.
+Economics,easy,What is the currency used in India?,Rupee,Dollar,Rial,Dinar,A,The official currency of India is the Indian Rupee.
+Economics,medium,Who is known as the father of the White Revolution in India?,M.S. Swaminathan,Verghese Kurien,Norman Borlaug,Sam Pitroda,B,Verghese Kurien is known as the father of the White Revolution for his role in dairy development.
+Economics,medium,Which Five Year Plan is associated with the term Garibi Hatao?,Second Plan,Third Plan,Fifth Plan,Sixth Plan,C,The Fifth Five Year Plan (1974-79) was associated with the slogan Garibi Hatao.
+Economics,medium,What does NABARD stand for?,National Bank for Agriculture and Rural Development,National Bureau for Agricultural Research and Development,National Association for Rural Development,National Bank for Agricultural Reforms,A,"NABARD stands for National Bank for Agriculture and Rural Development, established in 1982."
+Economics,medium,Which is the apex institution for foreign trade promotion in India?,SEBI,RBI,Export-Import Bank of India,NABARD,C,The Export-Import Bank of India (EXIM Bank) is the apex institution for financing and promoting foreign trade.
+Economics,medium,Which tax replaced most indirect taxes in India in 2017?,Income Tax,Wealth Tax,GST,Sales Tax,C,The Goods and Services Tax (GST) replaced most indirect taxes in India from July 2017.
+Economics,hard,India's economy is classified as which type?,Capitalist economy,Socialist economy,Mixed economy,Command economy,C,India follows a mixed economy model combining features of both capitalism and socialism.
+Economics,hard,Which bank issues currency notes in India?,State Bank of India,Reserve Bank of India,NABARD,SEBI,B,The Reserve Bank of India has the sole authority to issue currency notes in the country.
+Economics,hard,What is the base year currently used for calculating India's GDP?,2004-05,2011-12,2015-16,2000-01,B,India currently uses 2011-12 as the base year for calculating GDP.
+Economics,hard,Which sector is called the backbone of the Indian economy?,Service sector,Industrial sector,Agriculture sector,IT sector,C,Agriculture is often referred to as the backbone of the Indian economy due to its role in employment.
+Science,easy,Which is the powerhouse of the cell?,Nucleus,Ribosome,Mitochondria,Golgi body,C,Mitochondria are called the powerhouse of the cell as they generate most of the cell's energy.
+Science,easy,Which vitamin is produced when skin is exposed to sunlight?,Vitamin A,Vitamin B,Vitamin C,Vitamin D,D,Vitamin D is synthesized in the skin upon exposure to sunlight.
+Science,easy,What is the chemical symbol for Gold?,Ag,Au,Gd,Go,B,"The chemical symbol for Gold, Au, comes from its Latin name Aurum."
+Science,easy,Which blood group is known as the universal donor?,A,B,AB,O negative,D,O negative blood group is known as the universal donor since it can be given to any blood type.
+Science,easy,Which planet is known as the Red Planet?,Venus,Mars,Jupiter,Saturn,B,Mars is known as the Red Planet due to iron oxide on its surface giving it a reddish appearance.
+Science,medium,What is the pH value of pure water?,6,7,8,9,B,Pure water has a neutral pH value of 7.
+Science,medium,Which gas is used in the treatment of water to make it safe for drinking?,Oxygen,Chlorine,Nitrogen,Hydrogen,B,Chlorine gas is commonly used to disinfect and purify drinking water.
+Science,medium,Which part of the human body is affected by the disease Arthritis?,Heart,Lungs,Joints,Kidney,C,Arthritis is a disease that causes inflammation and pain in the joints.
+Science,medium,Which scientist proposed the theory of relativity?,Isaac Newton,Albert Einstein,Galileo Galilei,Niels Bohr,B,Albert Einstein proposed the theory of relativity in the early twentieth century.
+Science,medium,Which is the smallest unit of life?,Tissue,Organ,Cell,Organelle,C,The cell is considered the smallest structural and functional unit of life.
+Science,hard,What is the normal body temperature of a human in Celsius?,35 degrees,37 degrees,39 degrees,40 degrees,B,The normal human body temperature is approximately 37 degrees Celsius.
+Science,hard,Which instrument is used to measure atmospheric pressure?,Thermometer,Barometer,Hygrometer,Anemometer,B,A barometer is used to measure atmospheric pressure.
+Science,hard,Which element has the chemical symbol Fe?,Fluorine,Iron,Francium,Phosphorus,B,Iron's chemical symbol Fe comes from its Latin name Ferrum.
+Science,hard,Which organ in the human body produces insulin?,Liver,Pancreas,Kidney,Stomach,B,"The pancreas produces insulin, which regulates blood sugar levels."
+Science,hard,Which is the fastest land animal?,Lion,Cheetah,Horse,Leopard,B,"The cheetah is the fastest land animal, capable of speeds up to 100-120 km/h."
+Aptitude,easy,A man buys an article for Rs.500 and sells it for Rs.600. What is his profit percentage?,15%,20%,25%,10%,B,Profit percent = (Profit/Cost Price) x 100 = (100/500) x 100 = 20%.
+Aptitude,easy,What is the HCF of 12 and 18?,4,6,9,3,B,The Highest Common Factor of 12 and 18 is 6.
+Aptitude,easy,If a car covers 180 km in 3 hours what is its speed?,50 km/hr,55 km/hr,60 km/hr,65 km/hr,C,Speed = Distance/Time = 180/3 = 60 km/hr.
+Aptitude,easy,What is 25% of 400?,90,95,105,100,D,25% of 400 = (25/100) x 400 = 100.
+Aptitude,easy,"Find the next number in the series: 2, 4, 8, 16, ?",20,24,32,30,C,"Each number in the series is doubled to get the next, so 16 x 2 = 32."
+Aptitude,medium,What is the simple interest on Rs.1000 at 10% per annum for 2 years?,Rs.100,Rs.150,Rs.200,Rs.250,C,Simple Interest = (Principal x Rate x Time)/100 = (1000 x 10 x 2)/100 = Rs.200.
+Aptitude,medium,If the ratio of two numbers is 3:4 and their sum is 35 find the smaller number.,14,15,20,21,B,"Let the numbers be 3x and 4x. 3x + 4x = 35, so x = 5. Smaller number = 3x = 15."
+Aptitude,medium,What is the value of 7 squared minus 4 squared?,30,33,35,40,B,7 squared is 49 and 4 squared is 16. 49 - 16 = 33.
+Aptitude,medium,A sum of Rs.2000 becomes Rs.2200 in one year at simple interest. What is the rate of interest?,8%,10%,12%,15%,B,Interest earned = 200. Rate = (Interest x 100)/(Principal x Time) = (200 x 100)/(2000 x 1) = 10%.
+Aptitude,hard,What is the perimeter of a square with side 7 cm?,21 cm,28 cm,35 cm,49 cm,B,Perimeter of a square = 4 x side = 4 x 7 = 28 cm.
+Aptitude,hard,If 5 workers can complete a task in 12 days how many days will 10 workers take?,4 days,6 days,8 days,10 days,B,"Using the work formula, 5 x 12 = 10 x d, so d = 6 days."
+Aptitude,hard,What is the compound interest on Rs.1000 at 10% for 2 years compounded annually (approx)?,Rs.200,Rs.210,Rs.220,Rs.250,B,Compound Interest = 1000(1.1)^2 - 1000 = 1210 - 1000 = Rs.210.
+Aptitude,hard,"What comes next in the pattern: A, C, E, G, ?",H,I,J,K,B,"The pattern skips one letter each time, so after G comes I."
+Current Affairs,easy,Which scheme provides free bus travel for women in Tamil Nadu government buses?,Pudhumai Penkal,Illam Thedi Kalvi,Magalir Urimai Thittam,Kalaignar Urimai,C,Magalir Urimai Thittam provides free bus travel for women in Tamil Nadu government buses.
+Current Affairs,easy,What is the name of the home tuition support scheme launched in Tamil Nadu schools?,Naan Mudhalvan,Illam Thedi Kalvi,Pudhumai Penkal,Magalir Urimai Thittam,B,Illam Thedi Kalvi is a Tamil Nadu government scheme providing home-based learning support to students.
+Current Affairs,easy,Which country hosted the G20 Summit in 2023?,China,USA,Brazil,India,D,India hosted the G20 Summit in New Delhi in 2023.
+Current Affairs,easy,What is the name of the Tamil Nadu government's skill development scheme for students?,Illam Thedi Kalvi,Pudhumai Penkal,Naan Mudhalvan,Magalir Urimai Thittam,C,Naan Mudhalvan is a Tamil Nadu government scheme focused on employability and skill development.
+Current Affairs,easy,Which union territory shares a border with Tamil Nadu?,Lakshadweep,Andaman and Nicobar Islands,Daman and Diu,Puducherry,D,Puducherry is a union territory that shares its border with Tamil Nadu.
+Current Affairs,medium,Which scheme supports the education of girl children in Tamil Nadu schools?,Naan Mudhalvan,Pudhumai Penkal,Illam Thedi Kalvi,Magalir Urimai Thittam,B,Pudhumai Penkal scheme provides free bicycles and other support to promote girls' education in Tamil Nadu.
+Current Affairs,medium,Which Indian mission successfully landed near the Moon's south pole in 2023?,Chandrayaan-2,Chandrayaan-3,Mangalyaan,Aditya-L1,B,Chandrayaan-3 successfully achieved a soft landing near the Moon's south pole in August 2023.
+Current Affairs,medium,What is India's first solar mission called?,Chandrayaan-3,Gaganyaan,Aditya-L1,Mangalyaan,C,Aditya-L1 is India's first dedicated mission to study the Sun.
+Current Affairs,medium,In which city was the 2023 G20 Summit held?,Mumbai,New Delhi,Bengaluru,Chennai,B,"The 2023 G20 Summit was held in New Delhi, India."
+Current Affairs,hard,Which Tamil Nadu scheme provides breakfast to government school students?,Illam Thedi Kalvi,Pudhumai Penkal,Chief Minister's Breakfast Scheme,Naan Mudhalvan,C,The Chief Minister's Breakfast Scheme provides free breakfast to students in Tamil Nadu government schools.
+Current Affairs,hard,Who is the current Chief Justice of India (as of recent records)?,D.Y. Chandrachud,B.R. Gavai,N.V. Ramana,U.U. Lalit,B,"B.R. Gavai has served as Chief Justice of India, succeeding D.Y. Chandrachud."
+Current Affairs,hard,Which Indian state recently topped the Ease of Doing Business rankings in past years?,Kerala,Andhra Pradesh,Tamil Nadu,Punjab,B,Andhra Pradesh has ranked among the top states in India's Ease of Doing Business rankings.
+Current Affairs,hard,What is the name of India's mission to send humans into space?,Chandrayaan,Gaganyaan,Mangalyaan,Aditya-L1,B,Gaganyaan is India's human spaceflight programme aimed at sending astronauts into space.

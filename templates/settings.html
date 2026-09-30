@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/arena.css') }}">
+</head>
+<body class="arena-bg">
+    <div class="arena-card">
+        <h2 class="arena-title">⚙️ SETTINGS</h2>
+
+        {% if message %}<p style="color:#4ade80; font-weight:600;">{{ message }}</p>{% endif %}
+
+        <h3 style="text-align:left; margin-top:10px;">Profile</h3>
+        <form method="POST" style="display:flex; flex-direction:column; gap:10px; margin:10px 0 10px; text-align:left;">
+            <input type="hidden" name="form_type" value="profile">
+            <label style="font-size:13px; color:#9a9ad1;">Avatar</label>
+            <div class="avatar-options">
+                {% for a in avatars %}
+                    <label class="avatar-option {{ 'selected' if a == user.avatar else '' }}" style="margin:0;">
+                        <span>{{ a }}</span>
+                    </label>
+                {% endfor %}
+            </div>
+            <p style="font-size:11.5px; color:#8890c5;">You can change your avatar from the Profile page — this is just a preview here.</p>
+
+            <label style="font-size:13px; color:#9a9ad1;">Full Name</label>
+            <input type="text" name="full_name" value="{{ user.full_name }}" required
+                   style="padding:12px; border-radius:6px; border:1px solid #3a3a6a; background:#14142b; color:#fff;">
+
+            <button type="submit" class="arena-btn">Save Profile</button>
+        </form>
+
+        <h3 style="text-align:left; margin-top:24px;">Change Password</h3>
+        <form method="POST" style="display:flex; flex-direction:column; gap:10px; margin-top:10px;">
+            <input type="hidden" name="form_type" value="password">
+            <input type="password" name="current_password" placeholder="Current Password" required
+                   style="padding:12px; border-radius:6px; border:1px solid #3a3a6a; background:#14142b; color:#fff;">
+            <input type="password" name="new_password" placeholder="New Password" required
+                   style="padding:12px; border-radius:6px; border:1px solid #3a3a6a; background:#14142b; color:#fff;">
+            <button type="submit" class="arena-btn">Update Password</button>
+        </form>
+
+        <a href="{{ url_for('profile') }}" class="back-link">← Back to Profile</a>
+    </div>
+</body>
+</html>

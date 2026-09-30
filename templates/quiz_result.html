@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Result - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="select-container">
+        <h2>Quiz Result</h2>
+        <p><strong>Subject:</strong> {{ subject }}</p>
+
+        <div class="result-box">
+            <h1>{{ score }} / {{ total }}</h1>
+            <h3>{{ percentage }}% Score</h3>
+            {% if negative_marking %}<p style="color:#d90429; font-size:13px;">📝 Mock Test Mode (negative marking applied)</p>{% endif %}
+        </div>
+
+        <h3 style="margin-top:24px;">🤖 AI Analysis — Subject-wise Accuracy</h3>
+        {% if accuracy_report %}
+            <p style="font-size:14px; color:#555;">
+                Total subjects played: <strong>{{ total_subjects_played }}</strong> |
+                Weak areas detected: <strong style="color:#d90429;">{{ weak_count }}</strong>
+            </p>
+            <table class="report-table">
+                <tr><th>Subject</th><th>Times Played</th><th>Accuracy</th><th>Status</th></tr>
+                {% for r in accuracy_report %}
+                <tr>
+                    <td>{{ r.subject }}</td>
+                    <td>{{ r.attempts }}</td>
+                    <td>{{ r.accuracy }}%</td>
+                    <td>
+                        {% if r.accuracy < 50 %}
+                            <span style="color:#d90429; font-weight:600;">⚠️ Weak</span>
+                        {% else %}
+                            <span style="color:#2a9d8f; font-weight:600;">✅ Strong</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            {% if weak_areas %}
+                <p style="color:#d90429; font-weight:600; margin-top:10px;">
+                    ⚠️ Focus more practice on: {{ weak_areas|join(', ') }}
+                </p>
+            {% else %}
+                <p style="color:#2a9d8f; font-weight:600; margin-top:10px;">🎉 No weak areas detected — solid performance across all subjects played!</p>
+            {% endif %}
+        {% endif %}
+
+        <div class="option-grid" style="margin-top:20px;">
+            <a href="{{ url_for('exam_select', flow='practice') }}" class="option-card">🔁 Practice Another Subject</a>
+            <a href="{{ url_for('home') }}" class="option-card">🏠 Home</a>
+        </div>
+    </div>
+</body>
+</html>

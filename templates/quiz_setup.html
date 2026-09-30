@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Setup - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="select-container">
+        <h2>Quiz Setup</h2>
+        <p><strong>Subject:</strong> {{ subject }}</p>
+
+        <form method="GET" action="{{ url_for('start_quiz') }}">
+            <input type="hidden" name="group" value="{{ group }}">
+            <input type="hidden" name="subject" value="{{ subject }}">
+
+            <input type="hidden" name="mode" value="practice">
+            <label style="display:flex; align-items:center; gap:8px; margin:10px 0; font-size:14px;">
+                <input type="checkbox" name="negative_marking" value="yes">
+                📝 Mock Test Mode (negative marking: -0.25 per wrong answer)
+            </label>
+
+<h3>Choose Difficulty</h3>
+            <div class="option-grid">
+                <label class="option-card"><input type="radio" name="difficulty" value="easy" required> Easy</label>
+                <label class="option-card"><input type="radio" name="difficulty" value="medium" required> Medium</label>
+                <label class="option-card"><input type="radio" name="difficulty" value="hard" required> Hard</label>
+            </div>
+
+            <button type="submit" class="start-btn">🚀 Start Quiz</button>
+        </form>
+
+        <a href="{{ url_for('subject_select', group=group) }}" class="back-link">← Back</a>
+    </div>
+</body>
+</html>

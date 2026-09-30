@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Battle vs AI - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/arena.css') }}">
+</head>
+<body class="arena-bg">
+
+    <div class="battle-topbar">
+        <div class="score-box me">
+            <span class="score-label">YOU</span>
+            <span class="score-value" id="myScore">{{ player_score }}</span>
+            <span class="combo-tag" id="myCombo">🔥 x{{ player_combo }}</span>
+        </div>
+
+        <div class="timer-box">
+            <div class="timer-circle" id="timerCircle">15</div>
+            <span id="questionCounter">Q {{ current_q }}/{{ total }}</span>
+        </div>
+
+        <div class="score-box opponent ai-box">
+            <span class="score-label">{{ ai_label }}</span>
+            <span class="score-value" id="aiScore">{{ ai_score }}</span>
+            <div class="ai-thinking" id="aiThinking" style="display:none;">🤔 thinking...</div>
+        </div>
+    </div>
+
+    <div class="arena-card battle-question-card">
+        <h3>{{ question['question'] }}</h3>
+        <div class="options-grid" id="optionsGrid">
+            <button class="battle-option" data-option="A">A. {{ question['option_a'] }}</button>
+            <button class="battle-option" data-option="B">B. {{ question['option_b'] }}</button>
+            <button class="battle-option" data-option="C">C. {{ question['option_c'] }}</button>
+            <button class="battle-option" data-option="D">D. {{ question['option_d'] }}</button>
+        </div>
+        <p id="battleFeedback" class="feedback"></p>
+        <p id="aiFeedback" class="ai-feedback"></p>
+        <button id="nextBtn" class="arena-btn" style="display:none;">NEXT ➜</button>
+    </div>
+
+    <div class="powerup-bar">
+        <span class="powerup-label">POWER-UPS:</span>
+        <div class="powerup-icon" onclick="usePowerup('fifty_fifty', this)">🎯</div>
+        <div class="powerup-icon" onclick="usePowerup('double_points', this)">⚡</div>
+    </div>
+
+    <script>
+        let timeLeft = {{ time_limit }};
+        let timerInterval = null;
+        let useDoublePoints = false;
+        let answered = false;
+
+        function startTimer() {
+            document.getElementById('timerCircle').innerText = timeLeft;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timerCircle').innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    if (!answered) submitAnswer(null);
+                }
+            }, 1000);
+        }
+        startTimer();
+
+        document.querySelectorAll('.battle-option').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!answered) submitAnswer(btn.getAttribute('data-option'));
+            });
+        });
+
+        function usePowerup(key, el) {
+            if (key === 'double_points') useDoublePoints = true;
+            if (key === 'fifty_fifty') {
+                // hide two random wrong-looking buttons visually (client-side only, cosmetic)
+                const btns = Array.from(document.querySelectorAll('.battle-option'));
+                let hidden = 0;
+                btns.sort(() => Math.random() - 0.5);
+                for (const b of btns) {
+                    if (hidden < 2) { b.classList.add('hidden-option'); b.disabled = true; hidden++; }
+                }
+            }
+            el.style.opacity = '0.3';
+            el.onclick = null;
+        }
+
+        function submitAnswer(selected) {
+            answered = true;
+            clearInterval(timerInterval);
+            document.querySelectorAll('.battle-option').forEach(b => b.disabled = true);
+
+            const timeTaken = {{ time_limit }} - timeLeft;
+
+            fetch('/battle-ai/answer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `selected_option=${selected}&time_taken=${timeTaken}&use_double_points=${useDoublePoints}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('myScore').innerText = data.player_total;
+                document.getElementById('myCombo').innerText = `🔥 x${data.player_combo}`;
+                document.getElementById('battleFeedback').innerText = data.player_correct
+                    ? `✅ Correct! +${data.points_earned} pts`
+                    : `❌ Wrong! Answer was ${data.correct_answer}`;
+                document.getElementById('battleFeedback').className = data.player_correct ? 'feedback correct' : 'feedback wrong';
+
+                // Simulate AI "thinking" with its realistic delay before revealing its answer
+                document.getElementById('aiThinking').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('aiThinking').style.display = 'none';
+                    document.getElementById('aiScore').innerText = data.ai_total;
+                    document.getElementById('aiFeedback').innerText = data.ai_correct
+                        ? `🤖 AI answered correctly! +${data.ai_points_earned} pts`
+                        : `🤖 AI answered wrong.`;
+                    document.getElementById('nextBtn').style.display = 'inline-block';
+                }, data.ai_delay_ms);
+
+                document.getElementById('nextBtn').onclick = () => {
+                    window.location.href = data.next_url;
+                };
+            });
+        }
+    </script>
+</body>
+</html>

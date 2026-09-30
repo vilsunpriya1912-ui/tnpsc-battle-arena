@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Recommendations - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="select-container">
+        <h2>🤖 AI Recommendations</h2>
+
+        {% if accuracy_report %}
+            <p style="font-size:14px; color:#555;">
+                Total subjects played: <strong>{{ total_subjects_played }}</strong> |
+                Weak areas detected: <strong style="color:#d90429;">{{ weak_count }}</strong>
+            </p>
+
+            <h3>Subject-wise Accuracy</h3>
+            <table class="report-table">
+                <tr><th>Subject</th><th>Times Played</th><th>Accuracy</th><th>Status</th></tr>
+                {% for r in accuracy_report %}
+                <tr>
+                    <td>{{ r.subject }}</td>
+                    <td>{{ r.attempts }}</td>
+                    <td>{{ r.accuracy }}%</td>
+                    <td>
+                        {% if r.accuracy < 50 %}
+                            <span style="color:#d90429; font-weight:600;">⚠️ Weak</span>
+                        {% else %}
+                            <span style="color:#2a9d8f; font-weight:600;">✅ Strong</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <h3>⚠️ Weak Areas</h3>
+            {% if weak_areas %}
+                <ul>
+                    {% for w in weak_areas %}
+                        <li>{{ w }} — Focus more practice here</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Great performance across all subjects! 🎉</p>
+            {% endif %}
+        {% else %}
+            <p>You haven't attempted any quiz yet. Practice a few to see your AI analysis.</p>
+        {% endif %}
+
+        <!-- FLOATING LABI WIDGET -->
+        <div id="labiBubble" class="labi-bubble">
+            <button id="labiCloseBtn" class="labi-bubble-close">×</button>
+            <p id="labiBubbleText" class="labi-bubble-text"></p>
+        </div>
+        <div id="labiIcon" class="labi-icon">🤖</div>
+
+        <a href="{{ url_for('home') }}" class="back-link">← Back to Home</a>
+    </div>
+
+    <script>
+        const weakAreas = {{ weak_areas | tojson }};
+        const practiceUrlBase = "{{ url_for('quiz_setup', group='group1', subject='SUBJECT_PLACEHOLDER') }}";
+        const bubble = document.getElementById('labiBubble');
+        const bubbleText = document.getElementById('labiBubbleText');
+        const icon = document.getElementById('labiIcon');
+        const closeBtn = document.getElementById('labiCloseBtn');
+
+        function generateLabiThought() {
+            if (weakAreas.length > 0) {
+                const subject = weakAreas[0];
+                const practiceUrl = practiceUrlBase.replace('SUBJECT_PLACEHOLDER', encodeURIComponent(subject));
+                return `💡 I noticed your accuracy in <b>${subject}</b> needs work.<br>
+                        <a href="${practiceUrl}" class="labi-bubble-link">▶ Practice Now</a>`;
+            }
+            return `🎉 Nice work! Your accuracy looks solid across subjects — keep the streak going!`;
+        }
+
+        window.addEventListener('load', () => {
+            bubbleText.innerHTML = generateLabiThought();
+            setTimeout(() => bubble.classList.add('show'), 600);
+        });
+
+        icon.addEventListener('click', () => bubble.classList.toggle('show'));
+        closeBtn.addEventListener('click', () => bubble.classList.remove('show'));
+    </script>
+</body>
+</html>

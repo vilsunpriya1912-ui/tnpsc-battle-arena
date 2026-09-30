@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="quiz-layout">
+
+        <div class="quiz-main">
+            <div class="quiz-header">
+                <span>Question {{ current_q }} / {{ total }}</span>
+                <span>{{ question['subject'] }} - {{ question['difficulty']|capitalize }}</span>
+            </div>
+
+            <div class="quiz-question" id="questionBox">
+                <h3>{{ question['question'] }}</h3>
+                <div class="options-list">
+                    <button class="option-btn" data-option="A">A. {{ question['option_a'] }}</button>
+                    <button class="option-btn" data-option="B">B. {{ question['option_b'] }}</button>
+                    <button class="option-btn" data-option="C">C. {{ question['option_c'] }}</button>
+                    <button class="option-btn" data-option="D">D. {{ question['option_d'] }}</button>
+                </div>
+                <p id="feedbackText" class="feedback"></p>
+                <button id="bookmarkBtn" class="bookmark-btn">⭐ Bookmark this question</button>
+                <button id="nextBtn" class="next-btn" style="display:none;">Next ➜</button>
+            </div>
+        </div>
+
+        <div class="labi-chat">
+            <h3>🤖 LABI Assistant</h3>
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-input-row">
+                <input type="text" id="chatInput" placeholder="Ask LABI: explain / notes...">
+                <button id="chatSendBtn">Send</button>
+            </div>
+        </div>
+
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+document.getElementById('bookmarkBtn').addEventListener('click', function () {
+    fetch('/bookmark-question', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+            this.innerText = data.already ? '⭐ Already Bookmarked' : '✅ Bookmarked!';
+            this.disabled = true;
+        }.bind(this));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Progress - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="select-container" style="max-width:750px;">
+        <h2>📈 My Progress</h2>
+        <canvas id="accuracyBarChart" height="90"></canvas>
+        <canvas id="trendLineChart" height="90" style="margin-top:30px;"></canvas>
+
+        <h3 style="margin-top:20px;">Recent Practice Quizzes</h3>
+        {% if quiz_results %}
+        <table class="report-table">
+            <tr><th>Subject</th><th>Difficulty</th><th>Score</th><th>Date</th></tr>
+            {% for r in quiz_results %}
+            <tr>
+                <td>{{ r.subject }}</td>
+                <td>{{ r.difficulty|capitalize }}</td>
+                <td>{{ r.score }} / {{ r.total_questions }}</td>
+                <td>{{ r.date_taken.strftime('%d-%m-%Y') }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No practice quizzes yet.</p>
+        {% endif %}
+
+        <h3 style="margin-top:25px;">Recent Battles</h3>
+        {% if battle_results %}
+        <table class="report-table">
+            <tr><th>Subject</th><th>Mode</th><th>Opponent</th><th>Result</th><th>Score</th></tr>
+            {% for b in battle_results %}
+            <tr>
+                <td>{{ b.subject }}</td>
+                <td>{{ b.mode|upper }}</td>
+                <td>{{ b.opponent_name }}</td>
+                <td>{{ b.result|capitalize }}</td>
+                <td>{{ b.player_score }} - {{ b.opponent_score }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No battles played yet.</p>
+        {% endif %}
+
+        <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+const subjectLabels = {{ accuracy_report | map(attribute='subject') | list | tojson }};
+const subjectAcc = {{ accuracy_report | map(attribute='accuracy') | list | tojson }};
+
+new Chart(document.getElementById('accuracyBarChart'), {
+    type: 'bar',
+    data: {
+        labels: subjectLabels,
+        datasets: [{ label: 'Accuracy %', data: subjectAcc, backgroundColor: '#0f3460' }]
+    },
+    options: { plugins: { title: { display: true, text: 'Subject-wise Accuracy' } }, scales: { y: { beginAtZero: true, max: 100 } } }
+});
+
+const trendLabels = {{ trend_labels | tojson }};
+const trendValues = {{ trend_values | tojson }};
+
+new Chart(document.getElementById('trendLineChart'), {
+    type: 'line',
+    data: {
+        labels: trendLabels,
+        datasets: [{ label: 'Score % Over Time', data: trendValues, borderColor: '#2a9d8f', tension: 0.3 }]
+    },
+    options: { plugins: { title: { display: true, text: 'Accuracy Trend' } }, scales: { y: { beginAtZero: true, max: 100 } } }
+});
+</script>
+</body>
+</html>

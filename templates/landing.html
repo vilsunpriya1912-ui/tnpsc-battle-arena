@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNPSC Battle Arena Using AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body>
+
+    <!-- TOP NAV -->
+    <header class="topnav">
+        <div class="topnav-inner">
+            <a href="#home" class="nav-logo">⚔️ TNPSC Battle Arena</a>
+
+            <nav class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#ai-assistant">AI Assistant</a>
+                <a href="{{ url_for('exam_select') }}" class="guard-link">Battle</a>
+                <a href="{{ url_for('exam_select', flow='practice') }}" class="guard-link">Practice Quiz</a>
+                <a href="{{ url_for('notes') }}" class="guard-link">Notes</a>
+                <a href="{{ url_for('bookmarks_page') }}" class="guard-link">Bookmarks</a>
+            </nav>
+
+            <div class="nav-auth">
+                {% if logged_in %}
+                    <a href="{{ url_for('profile') }}" class="nav-btn ghost">👤 {{ username }}</a>
+                    <a href="{{ url_for('logout') }}" class="nav-btn solid">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="nav-btn ghost">Login</a>
+                    <a href="{{ url_for('register') }}" class="nav-btn solid">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section id="home" class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <p class="hero-eyebrow">TNPSC exam prep, reimagined as a battle</p>
+                <h1>Answer fast. Beat your rival. Clear the exam.</h1>
+                <p class="hero-sub">
+                    Practice real TNPSC questions inside a live 1v1 arena — race a friend or an AI opponent,
+                    stack combos, and let LABI explain every answer you get wrong.
+                </p>
+                <a href="{{ url_for('exam_select') }}" class="cta-btn guard-link">🎯 Start Battle</a>
+            </div>
+
+            <div class="hero-visual">
+                <div class="vs-mini">
+                    <div class="vs-mini-card">
+                        <div class="vs-mini-avatar">🥷</div>
+                        <div class="vs-mini-name">You</div>
+                        <div class="vs-mini-score">240</div>
+                    </div>
+                    <div class="vs-mini-badge">VS</div>
+                    <div class="vs-mini-card">
+                        <div class="vs-mini-avatar">🤖</div>
+                        <div class="vs-mini-name">Master Bot</div>
+                        <div class="vs-mini-score">210</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>One arena, every way to prepare</h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="about-icon">👤⚔️👤</div>
+                    <h3>Player vs Player</h3>
+                    <p>Create a room, share the code, and battle a friend live with real-time scoring.</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon">👤⚔️🤖</div>
+                    <h3>Player vs AI</h3>
+                    <p>Pick Beginner, Smart, or Master difficulty and battle a bot with realistic accuracy and delay.</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon">🔥</div>
+                    <h3>Combos &amp; Power-Ups</h3>
+                    <p>Chain correct answers for score multipliers, and unlock power-ups like Freeze and Double Points.</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon">📊</div>
+                    <h3>Progress Tracking</h3>
+                    <p>XP, coins, and a leaderboard keep score across every battle, plus a weak-area accuracy report.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI ASSISTANT -->
+    <section id="ai-assistant" class="ai-section">
+        <div class="container ai-grid">
+            <div class="ai-text">
+                <h2>Meet LABI, your in-battle assistant</h2>
+                <p>
+                    Stuck on a question? Type <strong>"explain"</strong> or <strong>"notes"</strong> in the chat
+                    during any quiz and LABI breaks down the correct answer, the subject it belongs to,
+                    and the key points worth remembering — right there on the quiz screen.
+                </p>
+            </div>
+            <div class="ai-chat-mock">
+                <div class="ai-chat-row user">explain</div>
+                <div class="ai-chat-row bot">📘 Explanation — Correct answer: Option B. This topic is frequently asked in TNPSC exams.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>TNPSC Battle Arena Using AI — built for focused, competitive exam practice.</p>
+    </footer>
+
+    <script>
+        const loggedIn = {{ 'true' if logged_in else 'false' }};
+
+        if (!loggedIn) {
+            document.querySelectorAll('.guard-link').forEach(function (el) {
+                el.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    showAuthToast();
+                    setTimeout(function () {
+                        window.location.href = "{{ url_for('login') }}";
+                    }, 1400);
+                });
+            });
+        }
+
+        function showAuthToast() {
+            let toast = document.getElementById('authToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'authToast';
+                toast.className = 'auth-toast';
+                toast.innerText = 'Please register or login to access this — redirecting...';
+                document.body.appendChild(toast);
+            }
+            toast.classList.add('show');
+            setTimeout(function () { toast.classList.remove('show'); }, 1400);
+        }
+    </script>
+
+</body>
+</html>

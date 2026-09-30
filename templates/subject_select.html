@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Subject - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="select-container">
+        <h2>Select Subject</h2>
+        <p>{{ group|upper }} Subjects</p>
+        <div class="option-grid">
+            {% for subject in subjects %}
+    {% if flow == 'practice' %}
+        <a href="{{ url_for('quiz_setup', group=group, subject=subject) }}" class="option-card">{{ subject }}</a>
+    {% else %}
+        <a href="{{ url_for('battle_mode_select', group=group, subject=subject) }}" class="option-card">{{ subject }}</a>
+    {% endif %}
+{% endfor %}
+        </div>
+        <a href="{{ url_for('exam_select') }}" class="back-link">← Back</a>
+    </div>
+</body>
+</html>

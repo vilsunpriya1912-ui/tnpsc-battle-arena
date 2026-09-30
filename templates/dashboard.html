@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h2>Welcome, {{ username }}! 👋</h2>
+        <div class="dashboard-menu">
+            <a href="{{ url_for('exam_select') }}" class="menu-card">🎯 Start Battle</a>
+            <a href="{{ url_for('exam_select', flow='practice') }}" class="menu-card">📚 Practice Quiz</a>
+            <a href="{{ url_for('recommendations') }}" class="menu-card">🤖 AI Recommendations</a>
+            <a href="{{ url_for('leaderboard') }}" class="menu-card">🏆 Leaderboard</a>
+            <a href="{{ url_for('performance') }}" class="menu-card">📊 My Performance</a>
+            <a href="{{ url_for('notes') }}" class="menu-card">📒 Notes & Resources</a>
+            <a href="{{ url_for('progress_page') }}" class="menu-card">📈 Progress</a>
+            <a href="{{ url_for('profile') }}" class="menu-card">👤 My Profile</a>
+            <a href="{{ url_for('settings_page') }}" class="menu-card">⚙️ Settings</a>
+            <a href="{{ url_for('logout') }}" class="menu-card logout">🚪 Logout</a>
+        </div>
+    </div>
+</body>
+</html>

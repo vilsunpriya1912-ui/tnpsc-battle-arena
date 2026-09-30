@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - TNPSC Battle Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/arena.css') }}">
+</head>
+<body class="arena-bg">
+    <div class="arena-card profile-card">
+        <h2 class="arena-title">👤 MY PROFILE</h2>
+
+        {% if logged_in %}
+            <div class="avatar-wrap">
+                <div class="avatar-circle">{{ user.avatar }}</div>
+                <button type="button" id="editAvatarBtn" class="avatar-edit-btn">✏️ Edit</button>
+            </div>
+
+            <div id="avatarPicker" class="avatar-picker" style="display:none;">
+                <form method="POST" action="{{ url_for('set_avatar') }}">
+                    <div class="avatar-options">
+                        {% for a in avatars %}
+                            <label class="avatar-option {{ 'selected' if a == user.avatar else '' }}">
+                                <input type="radio" name="avatar" value="{{ a }}" style="display:none;"
+                                       {% if a == user.avatar %}checked{% endif %}
+                                       onclick="this.form.submit()">
+                                <span>{{ a }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+
+            <h3 class="profile-name">{{ user.full_name }}</h3>
+            <p class="profile-username">@{{ user.username }}</p>
+
+            <div class="xp-bar-wrap">
+                <div class="xp-bar-labels">
+                    <span>{{ level_info.icon }} {{ level_info.name }}</span>
+                    {% if level_info.next_name %}
+                        <span>{{ level_info.next_name }} →</span>
+                    {% endif %}
+                </div>
+                <div class="xp-bar-track">
+                    <div class="xp-bar-fill" style="width: {{ level_info.progress|int }}%;"></div>
+                </div>
+                <p class="xp-bar-sub">
+                    {% if level_info.next_name %}
+                        {{ level_info.xp }} / {{ level_info.next_xp }} XP
+                    {% else %}
+                        {{ level_info.xp }} XP — Max level!
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="stat-pills">
+                <div class="stat-pill"><span class="stat-num">{{ user.coins or 0 }}</span><span class="stat-lbl">🪙 Coins</span></div>
+                <div class="stat-pill"><span class="stat-num">{{ battles or 0 }}</span><span class="stat-lbl">⚔️ Battles</span></div>
+                <div class="stat-pill"><span class="stat-num">{{ wins or 0 }}</span><span class="stat-lbl">🏆 Wins</span></div>
+            </div>
+
+            <table class="report-table" style="color:#fff; margin-top:20px;">
+                <tr><th>Email</th><td>{{ user.email or '—' }}</td></tr>
+                <tr><th>Date of Birth</th><td>{{ user.dob or '—' }}</td></tr>
+            </table>
+
+            <a href="{{ url_for('settings_page') }}" class="arena-btn" style="display:block; text-decoration:none; margin-top:16px;">⚙️ Edit Profile in Settings</a>
+
+            <h3 style="margin-top:26px;">⚠️ Weak Areas</h3>
+            {% if weak_areas %}
+                <div class="option-grid">
+                    {% for subject in weak_areas %}
+                        <a href="{{ url_for('quiz_setup', group='group1', subject=subject) }}"
+                           class="option-card" style="border-color:#ff4b6e; color:#ff9db3;">
+                            {{ subject }}
+                        </a>
+                    {% endfor %}
+                </div>
+                <p style="font-size:12.5px; color:#9a9ad1; margin-top:8px;">Click a subject to practice it right away.</p>
+            {% else %}
+                <p style="color:#4ade80; margin-top:10px;">🎉 No weak areas detected — keep it up!</p>
+            {% endif %}
+
+        {% else %}
+            <div style="font-size:70px; opacity:0.4;">👤</div>
+            <p style="color:#9a9ad1; margin:10px 0 20px;">You're not logged in yet — register to start tracking your level, XP, coins and battle history.</p>
+            <div class="option-grid">
+                <a href="{{ url_for('login') }}" class="option-card">Login</a>
+                <a href="{{ url_for('register') }}" class="option-card">Register</a>
+            </div>
+        {% endif %}
+
+        <a href="{{ url_for('home') }}" class="back-link">← Back to Home</a>
+    </div>
+
+    <script>
+        const editBtn = document.getElementById('editAvatarBtn');
+        const picker = document.getElementById('avatarPicker');
+        if (editBtn && picker) {
+            editBtn.addEventListener('click', () => {
+                picker.style.display = (picker.style.display === 'none') ? 'block' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
