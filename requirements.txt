@@ -2,5 +2,5 @@ flask
 flask-sqlalchemy
 flask-socketio
 pandas
-gunicorn
+gunicorn==20.1.0
 eventlet
