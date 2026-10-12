@@ -1,7 +1,7 @@
-      flask
-   flask-sqlalchemy
-   flask-socketio
-   pandas
-   gunicorn==21.2.0
-   eventlet==0.33.3
-   anthropic
+flask
+flask-sqlalchemy
+flask-socketio
+eventlet
+gunicorn
+pandas
+anthropic
