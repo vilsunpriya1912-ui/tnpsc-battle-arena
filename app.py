@@ -728,15 +728,18 @@ def handle_player_ready(data):
     room = battle_rooms.get(room_code)
     if not room:
         return
-    room['players'][user_id]['ready'] = True
-    all_ready = all(p['ready'] for p in room['players'].values())
-    if all_ready and len(room['players']) == 2:
-        room['status'] = 'in_progress'
-        room['questions'] = get_questions_for_battle(room['subject'], 'medium', count=10)
-        room['current_q'] = 0
-        emit('battle_start', {"total_questions": len(room['questions']),
-                               "time_per_question": TIME_PER_QUESTION}, room=room_code)
-        send_next_question(room_code)
+        pid = next((k for k in room['players'] if str(k) == str(user_id)), None)
+        if pid is None:
+            return
+            room['players'][pid]['ready'] = True
+            all_ready = all(p['ready'] for p in room['players'].values())
+            if all_ready and len(room['players']) == 2:
+                room['status'] = 'in_progress'
+                room['questions'] = get_questions_for_battle(room['subject'], 'medium', count=10)
+                room['current_q'] = 0
+                emit('battle_start', {"total_questions": len(room['questions']),
+                "time_per_question": TIME_PER_QUESTION}, room=room_code)
+                send_next_question(room_code)
 
 def send_next_question(room_code):
     room = battle_rooms.get(room_code)
