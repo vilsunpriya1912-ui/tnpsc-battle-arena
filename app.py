@@ -723,17 +723,21 @@ def handle_join_room(data):
 
 @socketio.on('player_ready')
 def handle_player_ready(data):
+    print("READY EVENT:", data, flush=True)
     room_code = data['room_code']
     user_id = data['user_id']
     room = battle_rooms.get(room_code)
     if not room:
+        print("ROOM NOT FOUND:", room_code, list(battle_rooms.keys()), flush=True)
         return
-        pid = next((k for k in room['players'] if str(k) == str(user_id)), None)
-        if pid is None:
-            return
-            room['players'][pid]['ready'] = True
-            all_ready = all(p['ready'] for p in room['players'].values())
-            if all_ready and len(room['players']) == 2:
+    pid = next((k for k in room['players'] if str(k) == str(user_id)), None)
+    if pid is None:
+        print("PLAYER NOT FOUND:", user_id, list(room['players'].keys()), flush=True)
+        return
+    room['players'][pid]['ready'] = True
+    print("PLAYERS STATE:", room['players'], flush=True)
+    all_ready = all(p['ready'] for p in room['players'].values())
+    if all_ready and len(room['players']) == 2:
                 room['status'] = 'in_progress'
                 room['questions'] = get_questions_for_battle(room['subject'], 'medium', count=10)
                 room['current_q'] = 0
