@@ -741,9 +741,17 @@ def handle_player_ready(data):
                 room['status'] = 'in_progress'
                 room['questions'] = get_questions_for_battle(room['subject'], 'medium', count=10)
                 room['current_q'] = 0
-                emit('battle_start', {"total_questions": len(room['questions']),
-                "time_per_question": TIME_PER_QUESTION}, room=room_code)
-                send_next_question(room_code)
+                emit('battle_start', {"total_questions": len(room['questions']),"time_per_question": TIME_PER_QUESTION}, room=room_code)
+@socketio.on('battle_page_loaded')
+def handle_battle_page_loaded(data):
+       room_code = data['room_code']
+       room = battle_rooms.get(room_code)
+       if not room:
+           return
+       room.setdefault('loaded', set()).add(str(data['user_id']))
+       if len(room['loaded']) >= len(room['players']) and not room.get('q_started'):
+           room['q_started'] = True
+           send_next_question(room_code)
 
 def send_next_question(room_code):
     room = battle_rooms.get(room_code)
