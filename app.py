@@ -1,4 +1,6 @@
 import os
+import random
+import string
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, join_room, emit
@@ -37,14 +39,12 @@ Give a short, clear explanation (3-4 sentences) of why the correct answer is rig
         return response.content[0].text
     except Exception:
         return generate_explanation(question)
-import random
-import string
 
 app = Flask(__name__)
 app.secret_key = "tnpsc_battle_arena_secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///battle_arena.db'
 db = SQLAlchemy(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 # ---------------- DATABASE MODELS ----------------
 
@@ -193,7 +193,8 @@ SUBJECTS = ["History", "Geography", "Polity", "Economics", "Science", "Aptitude"
 def subject_select(group):
     flow = request.args.get('flow', 'battle')
     return render_template('subject_select.html', subjects=SUBJECTS, group=group, flow=flow)
-    # ---------------- SHARED AI ANALYSIS HELPER ----------------
+
+# ---------------- SHARED AI ANALYSIS HELPER ----------------
 
 def get_ai_analysis(user_id):
     all_results = QuizResult.query.filter_by(user_id=user_id).all()
@@ -349,6 +350,7 @@ def quiz_result():
                             accuracy_report=accuracy_report, weak_areas=weak_areas,
                             weak_count=weak_count, total_subjects_played=total_subjects_played,
                             negative_marking=session.get('negative_marking', False))
+
 # ---------------- AI RECOMMENDATIONS ----------------
 
 @app.route('/recommendations')
@@ -415,6 +417,7 @@ def profile():
     return render_template('profile.html', user=user, level_info=level_info,
                             battles=battles, wins=wins, avatars=AVAILABLE_AVATARS,
                             weak_areas=weak_areas, logged_in=logged_in)
+
 # ---------------- PROGRESS ----------------
 
 @app.route('/progress')
@@ -654,6 +657,13 @@ def save_battle_result(user_id, mode, subject, opponent_name, result, player_sco
     db.session.commit()
     return xp_earned, coins_earned
 
+def get_player(room, user_id):
+    """Find a player in the room whether the id is stored as int or str."""
+    for key, player in room['players'].items():
+        if str(key) == str(user_id):
+            return key, player
+    return None, None
+
 # ---------------- PVP: CREATE / JOIN ROOM ----------------
 
 @app.route('/battle/create/<subject>')
@@ -723,35 +733,42 @@ def handle_join_room(data):
 
 @socketio.on('player_ready')
 def handle_player_ready(data):
-    print("READY EVENT:", data, flush=True)
     room_code = data['room_code']
     user_id = data['user_id']
     room = battle_rooms.get(room_code)
     if not room:
         print("ROOM NOT FOUND:", room_code, list(battle_rooms.keys()), flush=True)
         return
-    pid = next((k for k in room['players'] if str(k) == str(user_id)), None)
-    if pid is None:
+
+    pid, player = get_player(room, user_id)
+    if player is None:
         print("PLAYER NOT FOUND:", user_id, list(room['players'].keys()), flush=True)
         return
-    room['players'][pid]['ready'] = True
-    print("PLAYERS STATE:", room['players'], flush=True)
+    player['ready'] = True
+
     all_ready = all(p['ready'] for p in room['players'].values())
-    if all_ready and len(room['players']) == 2:
-                room['status'] = 'in_progress'
-                room['questions'] = get_questions_for_battle(room['subject'], 'medium', count=10)
-                room['current_q'] = 0
-                emit('battle_start', {"total_questions": len(room['questions']),"time_per_question": TIME_PER_QUESTION}, room=room_code)
+    if all_ready and len(room['players']) == 2 and room['status'] != 'in_progress':
+        room['status'] = 'in_progress'
+        room['questions'] = get_questions_for_battle(room['subject'], 'medium', count=10)
+        room['current_q'] = 0
+        emit('battle_start', {
+            "total_questions": len(room['questions']),
+            "time_per_question": TIME_PER_QUESTION
+        }, room=room_code)
+
 @socketio.on('battle_page_loaded')
 def handle_battle_page_loaded(data):
-       room_code = data['room_code']
-       room = battle_rooms.get(room_code)
-       if not room:
-           return
-       room.setdefault('loaded', set()).add(str(data['user_id']))
-       if len(room['loaded']) >= len(room['players']) and not room.get('q_started'):
-           room['q_started'] = True
-           send_next_question(room_code)
+    """Each player calls this once their battle page has loaded.
+    The first question is sent only when BOTH players are on the battle page."""
+    room_code = data['room_code']
+    room = battle_rooms.get(room_code)
+    if not room:
+        return
+    room.setdefault('loaded', set()).add(str(data['user_id']))
+    print("PAGE LOADED:", data, flush=True)
+    if len(room['loaded']) >= len(room['players']) and not room.get('q_started'):
+        room['q_started'] = True
+        send_next_question(room_code)
 
 def send_next_question(room_code):
     room = battle_rooms.get(room_code)
@@ -762,6 +779,7 @@ def send_next_question(room_code):
         finish_battle(room_code)
         return
     q = room['questions'][idx]
+    print("SENDING QUESTION:", idx + 1, flush=True)
     emit('new_question', {
         "question_number": idx + 1, "total": len(room['questions']),
         "question": q['question'],
@@ -782,9 +800,18 @@ def handle_submit_answer(data):
         return
 
     idx = room['current_q']
+    if idx >= len(room['questions']):
+        return
+
+    pid, player = get_player(room, user_id)
+    if player is None:
+        return
+    # ignore duplicate answers for the same question
+    if player['answers'] > idx:
+        return
+
     question = room['questions'][idx]
     correct_answer = question['answer']
-    player = room['players'][user_id]
 
     is_correct = (selected == correct_answer)
     if is_correct:
@@ -807,10 +834,10 @@ def handle_submit_answer(data):
         "is_correct": is_correct, "correct_answer": correct_answer,
         "points_earned": points, "combo": player['combo'],
         "total_score": player['score'], "powerup_awarded": awarded_powerup
-    }, room=room_code, to=request.sid)
+    }, to=request.sid)
 
-    scoreboard = [{"user_id": pid, "name": p["name"], "score": p["score"], "combo": p["combo"]}
-                  for pid, p in room['players'].items()]
+    scoreboard = [{"user_id": p_id, "name": p["name"], "score": p["score"], "combo": p["combo"]}
+                  for p_id, p in room['players'].items()]
     emit('live_score_update', {"scoreboard": scoreboard}, room=room_code)
 
     answered_count = sum(1 for p in room['players'].values() if p['answers'] > idx)
@@ -827,7 +854,9 @@ def handle_use_powerup(data):
     room = battle_rooms.get(room_code)
     if not room:
         return
-    player = room['players'][user_id]
+    pid, player = get_player(room, user_id)
+    if player is None:
+        return
     if powerup_key not in player['powerups']:
         return
     player['powerups'].remove(powerup_key)
@@ -835,7 +864,7 @@ def handle_use_powerup(data):
     if powerup_key == "freeze":
         emit('opponent_used_freeze', {"seconds_lost": 5}, room=room_code)
     else:
-        emit('powerup_applied', {"type": powerup_key}, room=room_code, to=request.sid)
+        emit('powerup_applied', {"type": powerup_key}, to=request.sid)
 
 def finish_battle(room_code):
     room = battle_rooms.get(room_code)
