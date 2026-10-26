@@ -499,11 +499,15 @@ def notes():
 @login_required
 def bookmark_question():
     questions = session.get('quiz_questions')
-    current_q = session.get('current_q', 0)
-    if not questions or current_q >= len(questions):
+    try:
+        q_index = int(request.form.get('q_index', -1))
+    except ValueError:
+        q_index = -1
+
+    if not questions or q_index < 0 or q_index >= len(questions):
         return jsonify({"success": False})
 
-    q = questions[current_q]
+    q = questions[q_index]
     existing = Bookmark.query.filter_by(
         user_id=session['user_id'], subject=q['subject'], question=q['question']
     ).first()
