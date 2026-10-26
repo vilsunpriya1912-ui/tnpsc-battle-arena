@@ -41,8 +41,18 @@ Give a short, clear explanation (3-4 sentences) of why the correct answer is rig
         return generate_explanation(question)
 
 app = Flask(__name__)
-app.secret_key = "tnpsc_battle_arena_secret_key"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///battle_arena.db'
+app.secret_key = os.environ.get('SECRET_KEY', 'tnpsc_battle_arena_secret_key')
+
+# ---- Database: use external PostgreSQL if DATABASE_URL is set, else local SQLite ----
+database_url = os.environ.get('DATABASE_URL')
+if database_url:
+    if database_url.startswith('postgres://'):
+        database_url = database_url.replace('postgres://', 'postgresql://', 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True, 'pool_recycle': 280}
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///battle_arena.db'
+
 db = SQLAlchemy(app)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
@@ -448,9 +458,17 @@ def settings_page():
 
         if form_type == 'profile':
             full_name = request.form.get('full_name', '').strip()
+            avatar = request.form.get('avatar')
+
+            changed = False
+            if avatar and avatar in AVAILABLE_AVATARS:
+                user.avatar = avatar
+                changed = True
             if full_name:
                 user.full_name = full_name
                 session['username'] = full_name
+                changed = True
+            if changed:
                 db.session.commit()
                 message = "Profile updated successfully."
 
