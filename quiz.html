@@ -42,12 +42,16 @@
     <script>
 document.getElementById('bookmarkBtn').addEventListener('click', function () {
     const btn = this;
+    btn.innerText = '⏳ Saving...';
     fetch('/bookmark-question', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: 'q_index={{ current_q - 1 }}'
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) { throw new Error('Server error ' + res.status); }
+        return res.json();
+    })
     .then(data => {
         if (data.success) {
             btn.innerText = data.already ? '⭐ Already Bookmarked' : '✅ Bookmarked!';
@@ -55,6 +59,9 @@ document.getElementById('bookmarkBtn').addEventListener('click', function () {
         } else {
             btn.innerText = '⚠️ Could not bookmark';
         }
+    })
+    .catch(err => {
+        btn.innerText = '⚠️ ' + err.message;
     });
 });
 </script>
