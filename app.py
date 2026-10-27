@@ -517,25 +517,34 @@ def notes():
 @login_required
 def bookmark_question():
     questions = session.get('quiz_questions')
+    if not questions:
+        return jsonify({"success": False, "error": "No active quiz"})
+
+    # The quiz page sends the question number (1-based) that is on screen.
+    # session['current_q'] already moves ahead once an answer is checked,
+    # so it cannot be used to know which question the user is looking at.
     try:
-        q_index = int(request.form.get('q_index', -1))
-    except ValueError:
-        q_index = -1
+        index = int(request.form.get('q_number')) - 1
+    except (TypeError, ValueError):
+        index = session.get('current_q', 0)
+    if index < 0 or index >= len(questions):
+        return jsonify({"success": False, "error": "Question not found"})
 
-    if not questions or q_index < 0 or q_index >= len(questions):
-        return jsonify({"success": False})
-
-    q = questions[q_index]
+    q = questions[index]
     existing = Bookmark.query.filter_by(
         user_id=session['user_id'], subject=q['subject'], question=q['question']
     ).first()
     if existing:
         return jsonify({"success": True, "already": True})
 
+    explanation = q.get('explanation', '')
+    if not isinstance(explanation, str):
+        explanation = ''
+
     bookmark = Bookmark(
         user_id=session['user_id'], subject=q['subject'], question=q['question'],
         option_a=q['option_a'], option_b=q['option_b'], option_c=q['option_c'], option_d=q['option_d'],
-        answer=q['answer'], explanation=q.get('explanation', '')
+        answer=q['answer'], explanation=explanation
     )
     db.session.add(bookmark)
     db.session.commit()
